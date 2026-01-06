@@ -42,10 +42,12 @@ fastify.addHook("preHandler", async (request, reply) => {
 
 fastify.register(formRoutes);
 
-fastify.listen({ port: Number(process.env.PORT) || 3001 }, (err, address) => {
-  if (err) {
+const PORT = process.env.PORT || 3000;
+
+// **IMPORTANT: bind to 0.0.0.0**
+fastify.listen({ port: Number(PORT), host: "0.0.0.0" })
+  .then(() => console.log(`Server running on port ${PORT}`))
+  .catch(err => {
     fastify.log.error(err);
     process.exit(1);
-  }
-  console.log(`Server listening at ${address}`);
-});
+  });
